@@ -90,7 +90,7 @@ int runTestDuplicates (int testNo) {
     clock_t t = clock();
 
     float time = ((float)t - (float)t0) / CLOCKS_PER_SEC;
-    printf("PASSED in %.3fs. \n", time);
+    printf("PASSED in %.2fs. \n", time);
 
     return 1;
 
@@ -139,7 +139,7 @@ int runTestAddFind (int testNo) {
     clock_t t = clock();
 
     float time = ((float)t - (float)t0) / CLOCKS_PER_SEC;
-    printf("PASSED in %.3fs. \n", time);
+    printf("PASSED in %.2fs. \n", time);
 
     return 1;
 
@@ -182,7 +182,7 @@ int runTestRemove (int testNo) {
     clock_t t = clock();
 
     float time = ((float)t - (float)t0) / CLOCKS_PER_SEC;
-    printf("PASSED in %.3fs. \n", time);
+    printf("PASSED in %.2fs. \n", time);
 
     return 1;
 
@@ -193,7 +193,7 @@ void runTests () {
     int i;
     int passedTests = 0;
     int loops = 0;
-/*    for (i = 0; i < NO_OF_TESTS; i++) {
+    for (i = 0; i < NO_OF_TESTS; i++) {
         passedTests += runTestAddFind(i + 1);
         loops++;
     }
@@ -202,7 +202,7 @@ void runTests () {
         passedTests += runTestDuplicates(i + 1);
         loops++;
     }
-    printf("-----------------------------------------\n");*/
+    printf("-----------------------------------------\n");
     for (i = 0; i < NO_OF_TESTS; i++) {
         passedTests += runTestRemove(i + 1);
         loops++;
