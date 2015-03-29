@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdlib.h>
 #include <time.h>
 #include <math.h>
 #include <string.h>
@@ -79,8 +78,9 @@ int runTestDuplicates (int testNo) {
         }
     }
 
-    if (lengthT(tree) != treeSize) {
-        printf("Length of the tree is not correct. Should be %d. FAILED.\n", treeSize);
+    int treeLen = lengthT(tree);
+    if (treeLen != treeSize) {
+        printf("Length of the tree is not correct. Should be %d, but is %d. FAILED.\n", treeSize, tree);
         destroyT(&tree);
         return 0;
     }
