@@ -2,40 +2,12 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
-#include <string.h>
 
 #include "binaryTree.h"
+#include "./../utils/utils.h"
 
 #define NO_OF_TESTS 100
 #define MAX_TREE_SIZE 250000
-
-#define MAX_INT 1000000
-
-#define NELEMS(x)  (sizeof(x) / sizeof(x[0]))
-
-
-static void shuffle(void *array, size_t n, size_t size) {
-    char tmp[size];
-    char *arr = array;
-    size_t stride = size * sizeof(char);
-
-    if (n > 1) {
-        size_t i;
-        for (i = 0; i < n - 1; ++i) {
-            size_t rnd = (size_t) rand();
-            size_t j = i + rnd / (RAND_MAX / (n - i) + 1);
-
-            memcpy(tmp, arr + j * stride, size);
-            memcpy(arr + j * stride, arr + i * stride, size);
-            memcpy(arr + i * stride, tmp, size);
-        }
-    }
-}
-
-
-T getRandomValue () {
-    return (rand() % MAX_INT * 2 + 1) - MAX_INT;
-}
 
 
 int runTestDuplicates (int testNo) {
@@ -80,7 +52,7 @@ int runTestDuplicates (int testNo) {
 
     int treeLen = lengthT(tree);
     if (treeLen != treeSize) {
-        printf("Length of the tree is not correct. Should be %d, but is %d. FAILED.\n", treeSize, tree);
+        printf("Length of the tree is not correct. Should be %d, but is %d. FAILED.\n", treeSize, treeLen);
         destroyT(&tree);
         return 0;
     }
@@ -190,6 +162,9 @@ int runTestRemove (int testNo) {
 
 
 void runTests () {
+
+    clock_t t0 = clock();
+
     int i;
     int passedTests = 0;
     int loops = 0;
@@ -209,13 +184,15 @@ void runTests () {
     }
     printf("-----------------------------------------\n");
 
-    printf("Total: %d, Passed: %d\n", loops, passedTests);
+    clock_t t = clock();
+    float time = ((float)t - (float)t0) / CLOCKS_PER_SEC;
+
+    printf("Total: %d, Passed: %d, Execution time: %.2fs\n", loops, passedTests, time);
 }
 
 
 int main () {
 
-    srand (time(NULL));
     runTests();
 
     return 0;

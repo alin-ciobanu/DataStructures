@@ -5,36 +5,44 @@
 #include <math.h>
 
 #include "linkedList.h"
+#include "./../utils/utils.h"
 
 #define NO_OF_TESTS 100
-#define MAX_LIST_SIZE 50000
-
-#define MAX_INT 1000000
-
-#define NELEMS(x)  (sizeof(x) / sizeof(x[0]))
+#define MAX_LIST_SIZE 100000
 
 
-static void shuffle(void *array, size_t n, size_t size) {
-    char tmp[size];
-    char *arr = array;
-    size_t stride = size * sizeof(char);
+int runTestLength (int testNo) {
 
-    if (n > 1) {
-        size_t i;
-        for (i = 0; i < n - 1; ++i) {
-            size_t rnd = (size_t) rand();
-            size_t j = i + rnd / (RAND_MAX / (n - i) + 1);
+    clock_t t0 = clock();
 
-            memcpy(tmp, arr + j * stride, size);
-            memcpy(arr + j * stride, arr + i * stride, size);
-            memcpy(arr + i * stride, tmp, size);
-        }
+    int listSize = (int) pow ( (float) (MAX_LIST_SIZE * testNo) / NO_OF_TESTS, (float) testNo / NO_OF_TESTS);
+
+    printf("Running LENGTH test %d. List size is %d. ", testNo, listSize);
+    LinkedList list;
+    initL(&list);
+
+    int i;
+    for (i = 0; i < listSize; i++) {
+        T value = getRandomValue();
+        addL(&list, value);
     }
-}
 
+    int listLen = lengthL(list);
+    if (listLen != listSize) {
+        printf("Length of the list is not correct. It is %d, but should be %d. FAILED.\n", listLen, listSize);
+        destroyL(&list);
+        return 0;
+    }
 
-T getRandomValue () {
-    return (rand() % MAX_INT * 2 + 1) - MAX_INT;
+    destroyL(&list);
+    
+    clock_t t = clock();
+
+    float time = ((float)t - (float)t0) / CLOCKS_PER_SEC;
+    printf("PASSED in %.2fs. \n", time);
+
+    return 1;
+
 }
 
 
@@ -47,7 +55,7 @@ int runTestRemoveWithLotsOfDuplicates (int testNo) {
     printf("Running REMOVE_ALL test %d. List size is %d. ", testNo, listSize);
     LinkedList list;
     initL(&list);
-    T values[listSize];
+    T *values = (T*) malloc (listSize * sizeof(T));
 
     T duplicatedValue = 0;
 
@@ -79,6 +87,7 @@ int runTestRemoveWithLotsOfDuplicates (int testNo) {
             if (found != NULL) {
                 printf("%d should not be found in the list but find function found it. FAILED.\n", value);
                 destroyL(&list);
+                free(values);
                 return 0;
             }
         }
@@ -87,6 +96,7 @@ int runTestRemoveWithLotsOfDuplicates (int testNo) {
             if (found == NULL || found->value != value) {
                 printf("%d should be found in the list but find function didn't find it. FAILED.\n", value);
                 destroyL(&list);
+                free(values);
                 return 0;
             }
         }
@@ -96,10 +106,12 @@ int runTestRemoveWithLotsOfDuplicates (int testNo) {
     if (listLen != correctLength) {
         printf("Length of the list is not correct. It is %d, but should be %d. FAILED.\n", listLen, correctLength);
         destroyL(&list);
+        free(values);
         return 0;
     }
 
 	destroyL(&list);
+    free(values);
     
     clock_t t = clock();
 
@@ -118,6 +130,11 @@ void runTests () {
     int passedTests = 0;
     int loops = 0;
     for (i = 0; i < NO_OF_TESTS; i++) {
+        passedTests += runTestLength(i + 1);
+        loops++;
+    }
+    printf("-----------------------------------------\n");
+    for (i = 0; i < NO_OF_TESTS; i++) {
         passedTests += runTestRemoveWithLotsOfDuplicates(i + 1);
         loops++;
     }
@@ -132,7 +149,6 @@ void runTests () {
 
 int main () {
 
-    srand (time(NULL));
     runTests();
 
     return 0;
