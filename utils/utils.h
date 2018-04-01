@@ -4,4 +4,4 @@
 
 int getRandomValue ();
 void shuffle(void *array, size_t n, size_t size);
-
+int max (int a, int b);

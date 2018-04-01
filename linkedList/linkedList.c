@@ -24,6 +24,16 @@ ListNode* findL (LinkedList list, T value) {
 	return NULL;
 }
 
+ListNode* getLastElementL (LinkedList list) {
+	if (list == NULL) {
+		return NULL;
+	}
+	while (list->next != NULL) {
+		list = list->next;
+	}
+	return list;
+}
+
 void addL (LinkedList* list, T value) {
 	ListNode* oldHead = *list;
 	*list = createNewNode(value, oldHead);

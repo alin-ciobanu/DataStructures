@@ -15,6 +15,8 @@ void initL(LinkedList* list);
 
 ListNode* findL (LinkedList list, T value);
 
+ListNode* getLastElementL (LinkedList list);
+
 void addL (LinkedList* list, T value);
 
 /**

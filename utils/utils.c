@@ -28,3 +28,10 @@ int getRandomValue () {
     srand (time(NULL));
     return (rand() % MAX_INT * 2 + 1) - MAX_INT;
 }
+
+int max (int a, int b) {
+    if (a > b) {
+        return a;
+    }
+    return b;
+}
